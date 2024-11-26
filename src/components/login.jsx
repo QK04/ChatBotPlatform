@@ -4,16 +4,13 @@ import axios from '../api/axios';
 import { jwtDecode } from 'jwt-decode';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useAuth } from '../context/authContext';
-
 import './Login.css'; 
 
-const Login = () => {
+const Login = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
   const navigate = useNavigate(); 
 
   const handleSubmit = async (e) => {
@@ -46,6 +43,7 @@ const Login = () => {
       if (response.status >= 200 && response.status < 300) {
         const responseBody = JSON.parse(response.data.body);
         
+
         const { access_token } = responseBody;
         console.log("User Data from API:", access_token);
 
@@ -72,11 +70,11 @@ const Login = () => {
           role: decodedToken.role,
         };
 
-        login(user); // Pass user data to the parent component
+        onLogin(user); // Pass user data to the parent component
 
         // Store user info in localStorage
         localStorage.setItem('user', JSON.stringify(user));
-        console.log("Login: User after login:", user);
+
         // Log the user role to check if it's being properly returned
         const role = decodedToken.role;
         console.log("User Role:", role);
