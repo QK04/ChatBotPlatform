@@ -11,72 +11,39 @@ import QuizPage from "./components/quiz";
 import "./App.css";
 
 const App = () => {
-  const [user, setUser] = useState(null); // Track logged-in user
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, []);
-
-  useEffect(() => {
-    if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
-    } else {
-      localStorage.removeItem("user");
-    }
-  }, [user]);
-
-  const handleLogout = () => {
-    setUser(null);
-  };
-
   return (
     <Router>
-      <Routes>
-        <Route path="/login" element={<Login onLogin={(user) => setUser(user)} />} />
-        <Route path="/register" element={<Register />} />
-        <Route
-          path="/student-dashboard"
-          element={
-            user && user.role === "Student" ? (
-              <StudentDashboard />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
-        <Route
-          path="/teacher-dashboard"
-          element={
-            user && user.role === "Teacher" ? (
-              <TeacherDashboard />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
-        <Route
-          path="/quiz"
-          element={user ? <QuizPage /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/test/:testId"
-          element={user ? <MultipleChoiceLayout /> : <Navigate to="/login" />}
-        />
-        <Route path="/protected" element={<ProtectedPage />} />
-        <Route
-          path="/"
-          element={
-            user ? (
-              <Dashboard user={user} onLogout={handleLogout} />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
-      </Routes>
+      <AuthProvider> 
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route
+            path="/student-dashboard"
+            element={
+              <ProtectedRoute requiredRole="Student">
+                <StudentDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/teacher-dashboard"
+            element={
+              <ProtectedRoute requiredRole="Teacher">
+                <TeacherDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/quiz"
+            element={<QuizPage />}
+          />
+          <Route
+            path="/test/:testId"
+            element={<MultipleChoiceLayout />}
+          />    
+          <Route path="/" element={<Navigate to="/login" />} />
+        </Routes>
+      </AuthProvider>
     </Router>
   );
 };
