@@ -8,7 +8,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import './Sidebar.css';
-import { useNavigate } from 'react-router-dom';
+
 import addChatIcon from '../assets/add_note.png';
 import awardIcon from '../assets/award.png';
 import historyIcon from '../assets/history.png';
@@ -21,7 +21,6 @@ import Setting from './SidebarItem/Setting';
 
 export default function Sidebar({ isOpen, toggleSidebar }) {
   const [showSettings, setShowSettings] = useState(false);
-  const navigate = useNavigate();
 
   const mainMenuItems = [
     { text: 'Add Chat', icon: addChatIcon },
@@ -64,13 +63,8 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
 
   const handleLogout = () => {
     console.log('Logging out...');
-    localStorage.removeItem('user'); // Xóa thông tin người dùng khỏi localStorage
-    const userAfterLogout = localStorage.getItem('user');
-    console.log('Token after logout:', userAfterLogout); // Log token sau khi xóa (nên là null)
-  
-    toggleSidebar(); // Đóng Sidebar
-    navigate('/login'); // Chuyển hướng về trang login
-  }
+    toggleSidebar();
+  };
 
   return (
     <>

@@ -1,12 +1,12 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Login from './components/login';
-import Register from './components/register';
-import StudentDashboard from './components/StudentDashboard';
-import TeacherDashboard from './components/TeacherDashboard';
-import ProtectedRoute from './components/ProtectedRoute';
-import { AuthProvider } from './context/authContext';
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import Login from "./components/login";
+import Register from "./components/register";
+import StudentDashboard from "./components/StudentDashboard"; 
+import TeacherDashboard from "./components/TeacherDashboard"; 
 import MultipleChoiceLayout from "./components/test"; 
+import ProtectedPage from "./components/ProtectedPage";
+import Dashboard from "./components/Dashboard";
 import QuizPage from "./components/quiz";
 import "./App.css";
 
